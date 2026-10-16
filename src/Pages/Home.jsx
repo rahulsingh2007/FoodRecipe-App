@@ -5,6 +5,7 @@ import OtherRecipes from "../Components/OtherRecipes"
 import Footer from "../Footer"
 import Navbar from "../Navbar"
 
+
 const Home = () => {
     return (
         <div className="min-h-screen bg-[#FAF7F0] flex flex-col justify-between">
