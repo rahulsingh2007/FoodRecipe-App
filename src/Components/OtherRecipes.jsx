@@ -61,7 +61,7 @@ const OtherRecipes = () => {
                                 </p>
                             </div>
                             <div className="text-[#7A7E71]">
-                                <p className="text-xs font-semibold pt-6">By FoodRecipe Kitchen</p>
+                                <p className="text-xs font-semibold pt-6">{recipe.sourceName}</p>
                                 <div className="flex gap-2 text-xs py-3">
                                     <span className="flex gap-1 items-center">
                                         <Clock size={16} strokeWidth={2.2} className="text-[#42674A]" />

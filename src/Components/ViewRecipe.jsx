@@ -51,27 +51,26 @@ const ViewRecipe = () => {
     return (
         <div className="min-h-screen bg-[#FAF7F0] flex flex-col justify-between">
             <Navbar />
-            
+            <button
+                onClick={() => navigate(-1)}
+                className="flex items-center gap-2 text-[#7D8174] hover:text-[#C7442E] transition-colors p-4 mb-6 font-semibold"
+            >
+                <ArrowLeft size={18} /> Back to Discover
+            </button>
             <div className="max-w-5xl mx-auto px-10 py-8 flex-1 w-full">
                 {/* Back Link */}
-                <button 
-                    onClick={() => navigate(-1)} 
-                    className="flex items-center gap-2 text-[#7D8174] hover:text-[#C7442E] transition-colors mb-6 font-semibold"
-                >
-                    <ArrowLeft size={18} /> Back to Discover
-                </button>
 
                 {/* Hero Header Layout Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-12">
-                    <img 
-                        src={recipe.image} 
-                        alt={recipe.title} 
-                        className="w-full h-80 object-cover rounded-3xl shadow-sm border border-[#E4E2D7]" 
+                    <img
+                        src={recipe.image}
+                        alt={recipe.title}
+                        className="w-full h-80 object-cover rounded-3xl shadow-sm border border-[#E4E2D7]"
                     />
                     <div>
-                        <span className="text-[#C7442E] text-xs font-bold uppercase tracking-wider">Homemade Recipe</span>
+                        <span className="text-[#C7442E] text-xs font-bold uppercase tracking-wider">{recipe.sourceName}</span>
                         <h1 className="text-4xl font-['Times_New_Roman',Times,serif] text-[#273C2D] mt-2 mb-4 leading-tight">{recipe.title}</h1>
-                        
+
                         <div className="flex gap-6 text-[#7A7E71] mb-6">
                             <span className="flex gap-2 items-center font-medium">
                                 <Clock size={18} className="text-[#42674A]" /> {recipe.readyInMinutes} mins
@@ -80,7 +79,7 @@ const ViewRecipe = () => {
                                 <Users size={18} className="text-[#42674A]" /> {recipe.servings} servings
                             </span>
                         </div>
-                        
+
                         <p className="text-[#7D8174] text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: recipe.summary?.split('. ').slice(0, 3).join('. ') + '.' }} />
                     </div>
                 </div>
