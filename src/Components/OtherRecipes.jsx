@@ -1,4 +1,4 @@
-import { ArrowRight, Clock, Users } from "lucide-react";
+import { Clock, Users } from "lucide-react";
 import First from "../assets/First.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
@@ -34,9 +34,6 @@ const OtherRecipes = () => {
             <p className="text-[#273C2D] text-3xl font-['Times_New_Roman',Times,serif]">Everyday delicious</p>
             <div className="flex justify-between py-2">
                 <p className="text-[#7D8174] text-sm font-semibold">Big flavor. Little effort. Recipes you'll come back to.</p>
-                <button className="flex gap-1 items-center hover:text-[#CC5641] hover:scale-105 transition-all duration-300">
-                    View all recipes<ArrowRight size={20} strokeWidth={1.75} />
-                </button>
             </div>
             {loading && <p className="text-[#7D8174] text-sm py-4">Loading recipes...</p>}
             {error && <p className="text-red-500 py-4">{error}</p>}
