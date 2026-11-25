@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import MyRecipe from "./Pages/MyRecipe";
+import ViewRecipe from "./Components/ViewRecipe";
 
 const App = () => {
   return (
@@ -9,6 +10,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/myrecipe" element={<MyRecipe />} />
+          <Route path="/recipe/:id" element={<ViewRecipe />} />
         </Routes>
       </div>
     </div>

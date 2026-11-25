@@ -4,13 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 import { setError, setLoading, setResults } from "../Redux/features/searchSlice";
 import { fetchRecipes } from "../API/MediaApi";
+import { Link } from "react-router-dom";
 
-const featuredRecipes = [
-    { id: "roast-chicken", title: "Lemon & herb roast chicken", category: "COMFORT FOOD", author: "Simply Recipes", readyInMinutes: 45, servings: 4 },
-    { id: "grain-bowl", title: "Green goddess grain bowl", category: "FRESH & SEASONAL", author: "Love and Lemons", readyInMinutes: 25, servings: 2 },
-    { id: "risotto", title: "Creamy wild mushroom risotto", category: "ITALIAN", author: "The Modern Proper", readyInMinutes: 40, servings: 4 },
-    { id: "tacos", title: "Spicy sweet potato tacos", category: "MEXICAN", author: "Cookie and Kate", readyInMinutes: 30, servings: 4 },
-];
 
 const OtherRecipes = () => {
     const dispatch = useDispatch();
@@ -18,14 +13,13 @@ const OtherRecipes = () => {
     const { query, results, loading, error } = searchState || {};
 
     const getData = useCallback(async () => {
-        if (!query) {
-            return;
-        }
+        if (!query) return;
+
         try {
             dispatch(setLoading());
             const response = await fetchRecipes(query);
             console.log(`Recipe search results for "${query}":`, response);
-            dispatch(setResults(response));
+            dispatch(setResults(response || []));
         } catch (err) {
             dispatch(setError(err instanceof Error ? err.message : "Unable to load recipes."));
         }
@@ -34,8 +28,6 @@ const OtherRecipes = () => {
     useEffect(() => {
         getData();
     }, [getData]);
-
-    const recipes = query ? results : featuredRecipes;
 
     return (
         <div className="pt-8">
@@ -46,52 +38,49 @@ const OtherRecipes = () => {
                     View all recipes<ArrowRight size={20} strokeWidth={1.75} />
                 </button>
             </div>
-
-            {loading && <p>Loading recipes...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {!loading && !error && query && results.length === 0 && (
-                <p className="py-5 text-[#7D8174]">No recipes found for "{query}". Try another search.</p>
-            )}
+            {loading && <p className="text-[#7D8174] text-sm py-4">Loading recipes...</p>}
+            {error && <p className="text-red-500 py-4">{error}</p>}
 
             <div className="grid grid-cols-4 gap-6 min-h-[45vh] py-5">
-                {recipes.map((recipe) => (
-                    <article key={recipe.id} className="overflow-hidden rounded-3xl bg-white">
+                {!loading && !error && query && results?.length === 0 && (
+                    <p className="col-span-4 text-center text-[#7D8174] py-8">No recipes found for "{query}".</p>
+                )}
+                {!loading && !error && results?.map((recipe) => (
+                    <Link
+                        to={`/recipe/${recipe.id}`}
+                        key={recipe.id}
+                        className="overflow-hidden rounded-3xl cursor-pointer hover:scale-101 transition-all duration-300 block bg-white"
+                    >
                         <img
                             src={recipe.image || First}
-                            alt={recipe.title}
+                            alt={recipe.title || "recipe image"}
                             className="h-1/2 w-full object-cover"
                         />
-                        <div className="flex h-1/2 flex-col justify-between px-5 py-2">
+                        <div className="flex flex-col justify-between px-5 py-2">
                             <div>
-                                <p className="text-[#C7442E] text-xs font-bold">
-                                    {recipe.category || "RECIPE"}
-                                </p>
-                                <p className="font-['Times_New_Roman',Times,serif] text-2xl py-2">
+                                <p className="text-[#C7442E] text-xs font-bold uppercase">RECIPE</p>
+                                <p className="font-['Times_New_Roman',Times,serif] text-2xl py-2 line-clamp-2 text-black">
                                     {recipe.title}
                                 </p>
                             </div>
                             <div className="text-[#7A7E71]">
-                                {recipe.author && <p className="text-xs font-semibold pt-6">By {recipe.author}</p>}
+                                <p className="text-xs font-semibold pt-6">By FoodRecipe Kitchen</p>
                                 <div className="flex gap-2 text-xs py-3">
-                                    {recipe.readyInMinutes && (
-                                        <span className="flex gap-1 items-center">
-                                            <Clock size={16} strokeWidth={2.2} className="text-[#42674A]" />
-                                            {recipe.readyInMinutes} min
-                                        </span>
-                                    )}
-                                    {recipe.servings && (
-                                        <span className="flex gap-1 items-center">
-                                            <Users size={16} strokeWidth={2.2} className="text-[#42674A]" />
-                                            {recipe.servings} servings
-                                        </span>
-                                    )}
+                                    <span className="flex gap-1 items-center">
+                                        <Clock size={16} strokeWidth={2.2} className="text-[#42674A]" />
+                                        {recipe.readyInMinutes || "N/A"} min
+                                    </span>
+                                    <span className="flex gap-1 items-center">
+                                        <Users size={16} strokeWidth={2.2} className="text-[#42674A]" />
+                                        {recipe.servings || "N/A"} servings
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                    </article>
+                    </Link>
                 ))}
             </div>
-        </div>
+        </div >
     );
 };
 

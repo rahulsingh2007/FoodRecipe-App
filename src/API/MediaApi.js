@@ -1,5 +1,6 @@
 import axios from "axios";
 const SPOONACULAR_KEY = import.meta.env.VITE_SPOONACULAR_KEY;
+
 export async function fetchRecipes(query) {
     if (!SPOONACULAR_KEY) {
         throw new Error("Missing VITE_SPOONACULAR_KEY. Add it to a .env file in the project root.");
@@ -8,6 +9,7 @@ export async function fetchRecipes(query) {
         params: {
             query,
             apiKey: SPOONACULAR_KEY,
+            addRecipeInformation: true
         }
     });
     const recipes = res.data?.results;
@@ -15,4 +17,13 @@ export async function fetchRecipes(query) {
         throw new Error("The recipe service returned an invalid response.");
     }
     return recipes;
+}
+
+export async function fetchRecipeDetails(id) {
+    const res = await axios.get(`https://api.spoonacular.com/recipes/${id}/information`, {
+        params: {
+            apiKey: SPOONACULAR_KEY
+        }
+    });
+    return res.data;
 }
